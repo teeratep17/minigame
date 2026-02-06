@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="th" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>อีสานหรรษา - ธีมดนตรี</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&amp;family=Sarabun:wght@400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    * {
+      font-family: 'Kanit', 'Sarabun', sans-serif;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 183, 77, 0.4); }
+      50% { box-shadow: 0 0 40px rgba(255, 183, 77, 0.8); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    @keyframes spirit-rise {
+      0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .pulse-glow {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+    
+    .shimmer-text {
+      background: linear-gradient(90deg, #FFB74D 0%, #FFF8E1 50%, #FFB74D 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
+    }
+    
+    .beat-animation {
+      animation: beat 0.5s ease-in-out;
+    }
+    
+    .spirit-rise {
+      animation: spirit-rise 0.8s ease-out forwards;
+    }
+    
+    .drum-pad {
+      transition: all 0.1s ease;
+    }
+    
+    .drum-pad:active {
+      transform: scale(0.95);
+      filter: brightness(1.2);
+    }
+    
+    .ponglang-bar {
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    
+    .ponglang-bar:hover {
+      filter: brightness(1.1);
+    }
+    
+    .ponglang-bar.active {
+      transform: scaleY(0.9);
+      filter: brightness(1.3);
+    }
+    
+    .card-flip {
+      perspective: 1000px;
+    }
+    
+    .card-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    
+    .card-flip.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+    
+    .progress-ring {
+      transition: stroke-dashoffset 0.3s ease;
+    }
+    
+    .mystical-bg {
+      background: 
+        radial-gradient(ellipse at top, rgba(103, 58, 183, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(255, 152, 0, 0.2) 0%, transparent 50%),
+        linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .instrument-unlocked {
+      filter: drop-shadow(0 0 15px rgba(255, 183, 77, 0.8));
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full mystical-bg text-white overflow-auto">
+  <div id="app" class="h-full w-full flex flex-col"><!-- Header -->
+   <header class="p-4 text-center relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-purple-900/30 to-transparent"></div>
+    <div class="relative z-10">
+     <h1 id="game-title" class="text-3xl md:text-4xl font-bold shimmer-text mb-1">อีสานหรรษา</h1>
+     <p id="story-subtitle" class="text-amber-300/80 text-sm md:text-base">เนื้อเรื่องที่ 1 : ธีมดนตรี</p>
+    </div>
+   </header><!-- Main Content -->
+   <main class="flex-1 overflow-auto p-4">
+    <!-- Navigation Menu -->
+    <div id="main-menu" class="space-y-3"> <button onclick="showScreen('drum-game')" class="w-full glass-card rounded-xl p-4 flex items-center gap-4 hover:bg-white/10 transition-all">
+      <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center"><span class="text-2xl">??</span>
+      </div>
+      <div class="text-left">
+       <h3 class="font-semibold text-amber-200">91</h3>
+      </div></button> <button onclick="showScreen('ponglang-game')" class="w-full glass-card rounded-xl p-4 flex items-center gap-4 hover:bg-white/10 transition-all">
+      <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center"><span class="text-2xl">??</span>
+      </div>
+      <div class="text-left">
+       <h3 class="font-semibold text-amber-200">34</h3>
+      </div></button> <button onclick="showScreen('code-input-game')" class="w-full glass-card rounded-xl p-4 flex items-center gap-4 hover:bg-white/10 transition-all">
+      <div class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center"><span class="text-2xl">🔢</span>
+      </div>
+      <div class="text-left">
+       <h3 class="font-semibold text-amber-200">ใส่รหัส</h3>
+       <p class="text-xs text-gray-400">กรอกรหัสจากการ์ดพิณ/แคน</p>
+      </div></button> <button onclick="showScreen('final-code')" class="w-full glass-card rounded-xl p-4 flex items-center gap-4 hover:bg-white/10 transition-all">
+      <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center"><span class="text-2xl">🔐</span>
+      </div>
+      <div class="text-left">
+       <h3 class="font-semibold text-amber-200">รหัสสุดท้าย</h3>
+       <p class="text-xs text-gray-400">เพื่อเปิดกล่องหินวิญญาณ</p>
+      </div></button>
+    </div><!-- Poem Screen -->
+    <!-- Drum Game Screen -->
+    <div id="drum-game" class="hidden"><button onclick="showScreen('main-menu')" class="mb-4 flex items-center gap-2 text-amber-400 hover:text-amber-300"> <span>←</span> กลับ </button>
+     <h2 class="text-xl font-bold text-amber-200 mb-2 text-center">🥁 มินิเกมกลอง</h2>
+     <p class="text-center text-gray-400 text-sm mb-4">ตีกลองตามจังหวะที่แสดง</p>
+     <div class="glass-card rounded-xl p-4 mb-4">
+      <div class="flex justify-between items-center mb-3"><span class="text-sm text-gray-400">รอบที่: <span id="drum-round" class="text-amber-400">1</span>/5</span> <span class="text-sm text-gray-400">คะแนน: <span id="drum-score" class="text-amber-400">0</span></span>
+      </div><!-- Rhythm Display -->
+      <div id="rhythm-display" class="flex justify-center gap-2 mb-4 min-h-[40px] items-center"><span class="text-gray-500">กดเริ่มเพื่อดูจังหวะ</span>
+      </div><!-- Drum Pads -->
+      <div class="grid grid-cols-2 gap-4 mb-4"><button onclick="hitDrum('left')" class="drum-pad aspect-square rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center text-4xl shadow-lg border-4 border-red-400/30" id="drum-left"> 🔴 </button> <button onclick="hitDrum('right')" class="drum-pad aspect-square rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-4xl shadow-lg border-4 border-blue-400/30" id="drum-right"> 🔵 </button>
+      </div><button onclick="startDrumGame()" id="drum-start-btn" class="w-full py-3 bg-gradient-to-r from-amber-600 to-orange-600 rounded-xl font-semibold hover:from-amber-500 hover:to-orange-500 transition-all"> เริ่มเกม </button>
+     </div>
+     <div id="drum-result" class="hidden glass-card rounded-xl p-4 text-center">
+      <div id="drum-result-content"></div>
+     </div>
+    </div><!-- Ponglang Game Screen -->
+    <div id="ponglang-game" class="hidden"><button onclick="showScreen('main-menu')" class="mb-4 flex items-center gap-2 text-amber-400 hover:text-amber-300"> <span>←</span> กลับ </button>
+     <h2 class="text-xl font-bold text-amber-200 mb-2 text-center">🎵 มินิเกมโปงลาง</h2>
+     <p class="text-center text-gray-400 text-sm mb-4">ตีโปงลางตามลำดับที่แสดง</p>
+     <div class="glass-card rounded-xl p-4 mb-4">
+      <div class="flex justify-between items-center mb-3"><span class="text-sm text-gray-400">รอบที่: <span id="ponglang-round" class="text-amber-400">1</span>/4</span> <span class="text-sm text-gray-400">คะแนน: <span id="ponglang-score" class="text-amber-400">0</span></span>
+      </div><!-- Sequence Display -->
+      <div id="sequence-display" class="flex justify-center gap-2 mb-4 min-h-[60px] items-center bg-black/30 rounded-xl p-4 flex-wrap"><span class="text-gray-500 w-full text-center">กดเริ่มเพื่อดูลำดับ</span>
+      </div><!-- Ponglang Bars -->
+      <div class="flex justify-center items-end gap-2 mb-4" id="ponglang-bars">
+       <div class="flex flex-col items-center"><span class="text-xs font-bold text-amber-300 mb-1">1</span> <button onclick="hitPonglang(0)" class="ponglang-bar w-8 h-16 bg-gradient-to-b from-amber-600 to-amber-800 rounded-t-lg" data-note="0"></button>
+       </div>
+       <div class="flex flex-col items-center"><span class="text-xs font-bold text-amber-300 mb-1">2</span> <button onclick="hitPonglang(1)" class="ponglang-bar w-8 h-20 bg-gradient-to-b from-amber-500 to-amber-700 rounded-t-lg" data-note="1"></button>
+       </div>
+       <div class="flex flex-col items-center"><span class="text-xs font-bold text-amber-300 mb-1">3</span> <button onclick="hitPonglang(2)" class="ponglang-bar w-8 h-24 bg-gradient-to-b from-amber-600 to-amber-800 rounded-t-lg" data-note="2"></button>
+       </div>
+       <div class="flex flex-col items-center"><span class="text-xs font-bold text-amber-300 mb-1">4</span> <button onclick="hitPonglang(3)" class="ponglang-bar w-8 h-28 bg-gradient-to-b from-amber-500 to-amber-700 rounded-t-lg" data-note="3"></button>
+       </div>
+       <div class="flex flex-col items-center"><span class="text-xs font-bold text-amber-300 mb-1">5</span> <button onclick="hitPonglang(4)" class="ponglang-bar w-8 h-32 bg-gradient-to-b from-amber-600 to-amber-800 rounded-t-lg" data-note="4"></button>
+       </div>
+       <div class="flex flex-col items-center"><span class="text-xs font-bold text-amber-300 mb-1">6</span> <button onclick="hitPonglang(5)" class="ponglang-bar w-8 h-28 bg-gradient-to-b from-amber-500 to-amber-700 rounded-t-lg" data-note="5"></button>
+       </div>
+       <div class="flex flex-col items-center"><span class="text-xs font-bold text-amber-300 mb-1">7</span> <button onclick="hitPonglang(6)" class="ponglang-bar w-8 h-24 bg-gradient-to-b from-amber-600 to-amber-800 rounded-t-lg" data-note="6"></button>
+       </div>
+       <div class="flex flex-col items-center"><span class="text-xs font-bold text-amber-300 mb-1">8</span> <button onclick="hitPonglang(7)" class="ponglang-bar w-8 h-20 bg-gradient-to-b from-amber-500 to-amber-700 rounded-t-lg" data-note="7"></button>
+       </div>
+      </div><button onclick="startPonglangGame()" id="ponglang-start-btn" class="w-full py-3 bg-gradient-to-r from-amber-600 to-orange-600 rounded-xl font-semibold hover:from-amber-500 hover:to-orange-500 transition-all"> เริ่มเกม </button>
+     </div>
+     <div id="ponglang-result" class="hidden glass-card rounded-xl p-4 text-center">
+      <div id="ponglang-result-content"></div>
+     </div>
+    </div><!-- Code Input Game -->
+    <div id="code-input-game" class="hidden">
+
+    <button onclick="showScreen('main-menu')"
+        class="mb-4 flex items-center gap-2 text-amber-400 hover:text-amber-300">
+        <span>←</span> กลับ
+    </button>
+
+    <div class="glass-card rounded-2xl p-6 max-w-md mx-auto">
+
+        <h2 class="text-xl font-bold text-amber-200 mb-4 text-center">
+        🔐 ใส่รหัสจากการ์ด
+        </h2>
+
+        <select id="instrument-select"
+        class="w-full mb-4 p-3 rounded-xl bg-black/40 text-amber-200 outline-none">
+        <option value="">เลือกเครื่องดนตรี</option>
+        <option value="pin">พิณ</option>
+        <option value="kaen">แคน</option>
+        </select>
+
+        <input
+        id="card-code-input"
+        type="text"
+        maxlength="4"
+        inputmode="numeric"
+        placeholder="กรอกรหัส 4 หลัก"
+        class="w-full p-4 text-center text-2xl tracking-widest rounded-xl bg-black/40 text-amber-200 outline-none mb-4"
+        />
+
+        <button onclick="submitCardCode()"
+        class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 text-black font-bold">
+        ยืนยันรหัส
+        </button>
+
+        <div id="card-code-result" class="hidden mt-6 text-center">
+        <p class="text-sm text-gray-400">รหัสที่ได้</p>
+        <p id="result-number"
+            class="text-5xl font-bold text-amber-400 tracking-widest"></p>
+        </div>
+
+    </div>
+    </div><!-- Final Code Screen -->
+    <div id="final-code" class="hidden"><button onclick="showScreen('main-menu')" class="mb-4 flex items-center gap-2 text-amber-400 hover:text-amber-300"> <span>←</span> กลับ </button>
+     <h2 class="text-xl font-bold text-amber-200 mb-4 text-center">🔐 รหัสเปิดกล่องหินวิญญาณ</h2>
+     <div class="glass-card rounded-xl p-4 mb-4">
+      <div id="final-instruments" class="grid grid-cols-4 gap-2 mb-4"><!-- Will be populated by JS -->
+      </div>
+      <div id="final-code-display" class="text-center py-4 mb-4 bg-black/30 rounded-xl">
+       <p class="text-gray-400 text-sm mb-2">รหัสสุดท้าย</p>
+       <p id="final-code-number" class="text-4xl font-bold text-amber-400 tracking-widest">????</p>
+      </div>
+      <div id="final-message" class="text-center text-gray-400">
+       <p>รวบรวมการ์ดเครื่องดนตรีให้ครบ 4 ชิ้น</p>
+       <p>เพื่อเปิดเผยรหัสสุดท้าย</p>
+      </div>
+      <div id="victory-section" class="hidden text-center mt-4">
+       <div class="text-6xl mb-4 spirit-rise">
+        💎
+       </div>
+       <h3 class="text-2xl font-bold text-amber-400 mb-2">ยินดีด้วย!</h3>
+       <p class="text-amber-200">คุณได้ปลดผนึกหินวิญญาณแห่งดนตรี</p>
+       <p class="text-sm text-gray-400 mt-2">นำรหัสไปเปิดกล่องเพื่อรับหินวิญญาณ</p>
+      </div>
+        <div class="mt-4">
+        <input
+            id="final-input"
+            type="text"
+            maxlength="4"
+            inputmode="numeric"
+            placeholder="ใส่รหัส 4 หลัก"
+            class="w-full p-4 text-center text-2xl tracking-widest rounded-xl bg-black/40 text-amber-200 outline-none mb-3"
+        />
+
+        <button onclick="submitFinalCode()"
+            class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 font-bold">
+            ยืนยันรหัส
+        </button>
+        </div>
+     </div>
+    </div>
+   </main><!-- Toast Notification -->
+   <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 rounded-full shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50"><span id="toast-message" class="font-medium"></span>
+   </div>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      game_title: 'อีสานหรรษา',
+      story_subtitle: 'เนื้อเรื่องที่ 1 : ธีมดนตรี',
+      primary_color: '#FFB74D',
+      secondary_color: '#1a1a2e',
+      text_color: '#FFFFFF',
+      accent_color: '#9C27B0',
+      button_color: '#FF9800'
+    };
+    
+    let config = { ...defaultConfig };
+    let unlockedInstruments = new Set();
+    let gameData = [];
+    
+    // Correct codes for each instrument
+    const correctCodes = {
+      drum: null, // Unlocked via minigame
+      ponglang: null, // Unlocked via minigame
+      pin: '8913', // From poem: แปด(8) เก้า(9) หนึ่ง(1) สาม(3)
+      kaen: '0425' // From poem: ศูนย์(0) สี่(4) สอง(2) ห้า(5)
+    };
+    
+    // Final code when all instruments collected
+    const finalCode = '1357';
+    
+    // Data SDK handler
+    const dataHandler = {
+      onDataChanged(data) {
+        gameData = data;
+        unlockedInstruments.clear();
+        data.forEach(item => {
+          if (item.unlocked) {
+            unlockedInstruments.add(item.instrument);
+          }
+        });
+        updateInstrumentDisplay();
+        updateFinalCodeScreen();
+      }
+    };
+    
+    // Element SDK functions
+    function onConfigChange(cfg) {
+      config = { ...defaultConfig, ...cfg };
+      
+      const titleEl = document.getElementById('game-title');
+      const subtitleEl = document.getElementById('story-subtitle');
+      
+      if (titleEl) titleEl.textContent = config.game_title || defaultConfig.game_title;
+      if (subtitleEl) subtitleEl.textContent = config.story_subtitle || defaultConfig.story_subtitle;
+    }
+    
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              cfg.primary_color = value;
+              window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => cfg.secondary_color || defaultConfig.secondary_color,
+            set: (value) => {
+              cfg.secondary_color = value;
+              window.elementSdk.setConfig({ secondary_color: value });
+            }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (value) => {
+              cfg.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => cfg.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              cfg.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          },
+          {
+            get: () => cfg.button_color || defaultConfig.button_color,
+            set: (value) => {
+              cfg.button_color = value;
+              window.elementSdk.setConfig({ button_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+    
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['game_title', cfg.game_title || defaultConfig.game_title],
+        ['story_subtitle', cfg.story_subtitle || defaultConfig.story_subtitle]
+      ]);
+    }
+    
+    // Initialize SDKs
+    async function initApp() {
+      // Initialize Element SDK
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities,
+          mapToEditPanelValues
+        });
+      }
+      
+      // Initialize Data SDK
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(dataHandler);
+        if (!result.isOk) {
+          console.error('Failed to initialize Data SDK');
+        }
+      }
+      
+      // Setup code input handlers
+      setupCodeInputs();
+      
+      // ⚡ Delete all records on page load to reset game
+      if (window.dataSdk) {
+        setTimeout(async () => {
+          if (gameData.length > 0) {
+            for (const record of gameData) {
+              await window.dataSdk.delete(record);
+            }
+            unlockedInstruments.clear();
+            gameData = [];
+            updateInstrumentDisplay();
+            updateFinalCodeScreen();
+            clearAllInputs();
+            showToast('🎮 เริ่มเกมใหม่');
+          }
+        }, 500);
+      }
+    }
+    
+    // Clear all input fields
+    function clearAllInputs() {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`code-${i}`);
+        if (el) el.value = '';
+      }
+      resetDrumGame();
+      resetPonglangGame();
+    }
+    
+    // Show/hide screens
+    function showScreen(screenId) {
+      const screens = ['main-menu', 'poem-screen', 'drum-game', 'ponglang-game', 'code-input-game', 'final-code'];
+      screens.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.classList.toggle('hidden', id !== screenId);
+        }
+      });
+      
+      // Reset game states when showing game screens
+      if (screenId === 'drum-game') resetDrumGame();
+      if (screenId === 'ponglang-game') resetPonglangGame();
+      if (screenId === 'final-code') updateFinalCodeScreen();
+    }
+    
+    // Update instrument display
+    function updateInstrumentDisplay() {
+      const instruments = ['drum', 'ponglang', 'pin', 'kaen'];
+      instruments.forEach(inst => {
+        const icon = document.getElementById(`${inst}-icon`);
+        if (icon) {
+          if (unlockedInstruments.has(inst)) {
+            icon.classList.remove('opacity-40');
+            icon.classList.add('instrument-unlocked');
+          } else {
+            icon.classList.add('opacity-40');
+            icon.classList.remove('instrument-unlocked');
+          }
+        }
+      });
+      
+      const progressText = document.getElementById('progress-text');
+      if (progressText) {
+        progressText.textContent = `${unlockedInstruments.size}/4`;
+      }
+    }
+    
+    // ========== DRUM GAME ==========
+    let drumGameState = {
+      round: 1,
+      score: 0,
+      pattern: [],
+      playerPattern: [],
+      isPlaying: false,
+      isPlayerTurn: false
+    };
+    
+    function resetDrumGame() {
+      drumGameState = {
+        round: 1,
+        score: 0,
+        pattern: [],
+        playerPattern: [],
+        isPlaying: false,
+        isPlayerTurn: false
+      };
+      document.getElementById('drum-round').textContent = '1';
+      document.getElementById('drum-score').textContent = '0';
+      document.getElementById('rhythm-display').innerHTML = '<span class="text-gray-500">กดเริ่มเพื่อดูจังหวะ</span>';
+      document.getElementById('drum-result').classList.add('hidden');
+      document.getElementById('drum-start-btn').classList.remove('hidden');
+    }
+    
+    function startDrumGame() {
+      drumGameState.isPlaying = true;
+      document.getElementById('drum-start-btn').classList.add('hidden');
+      generateDrumPattern();
+      playDrumPattern();
+    }
+    
+    function generateDrumPattern() {
+      const length = 3 + drumGameState.round;
+      drumGameState.pattern = [];
+      for (let i = 0; i < length; i++) {
+        drumGameState.pattern.push(Math.random() > 0.5 ? 'left' : 'right');
+      }
+    }
+    
+    function playDrumPattern() {
+      const display = document.getElementById('rhythm-display');
+      display.innerHTML = '<span class="text-amber-400">ดูจังหวะ...</span>';
+      
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < drumGameState.pattern.length) {
+          const side = drumGameState.pattern[i];
+          const drum = document.getElementById(`drum-${side}`);
+          drum.classList.add('beat-animation');
+          
+          display.innerHTML = drumGameState.pattern.slice(0, i + 1).map(s => 
+            s === 'left' ? '<span class="text-2xl">🔴</span>' : '<span class="text-2xl">🔵</span>'
+          ).join(' ');
+          
+          setTimeout(() => drum.classList.remove('beat-animation'), 400);
+          i++;
+        } else {
+          clearInterval(interval);
+          setTimeout(() => {
+            display.innerHTML = '<span class="text-green-400">ตาคุณ! ตีตามจังหวะ</span>';
+            drumGameState.isPlayerTurn = true;
+            drumGameState.playerPattern = [];
+          }, 500);
+        }
+      }, 600);
+    }
+    
+    function hitDrum(side) {
+      if (!drumGameState.isPlayerTurn) return;
+      
+      const drum = document.getElementById(`drum-${side}`);
+      drum.classList.add('beat-animation');
+      setTimeout(() => drum.classList.remove('beat-animation'), 200);
+      
+      drumGameState.playerPattern.push(side);
+      
+      const display = document.getElementById('rhythm-display');
+      display.innerHTML = drumGameState.playerPattern.map(s => 
+        s === 'left' ? '<span class="text-2xl">🔴</span>' : '<span class="text-2xl">🔵</span>'
+      ).join(' ');
+      
+      if (drumGameState.playerPattern.length === drumGameState.pattern.length) {
+        checkDrumPattern();
+      }
+    }
+    
+    function checkDrumPattern() {
+      drumGameState.isPlayerTurn = false;
+      
+      let correct = true;
+      for (let i = 0; i < drumGameState.pattern.length; i++) {
+        if (drumGameState.pattern[i] !== drumGameState.playerPattern[i]) {
+          correct = false;
+          break;
+        }
+      }
+      
+      if (correct) {
+        drumGameState.score += drumGameState.round * 10;
+        document.getElementById('drum-score').textContent = drumGameState.score;
+        showToast('ถูกต้อง! 🎉');
+        
+        if (drumGameState.round >= 5) {
+          completeDrumGame(true);
+        } else {
+          drumGameState.round++;
+          document.getElementById('drum-round').textContent = drumGameState.round;
+          setTimeout(() => {
+            generateDrumPattern();
+            playDrumPattern();
+          }, 1000);
+        }
+      } else {
+        showToast('ผิดพลาด! ลองใหม่');
+        if (drumGameState.score >= 30) {
+          completeDrumGame(true);
+        } else {
+          completeDrumGame(false);
+        }
+      }
+    }
+    
+    async function completeDrumGame(success) {
+      const resultDiv = document.getElementById('drum-result');
+      const contentDiv = document.getElementById('drum-result-content');
+      
+      resultDiv.classList.remove('hidden');
+      
+      if (success && !unlockedInstruments.has('drum')) {
+        contentDiv.innerHTML = `
+            <div class="text-5xl mb-4 spirit-rise">🥁</div>
+            <h3 class="text-xl font-bold text-amber-400 mb-2">ปลดผนึกกลองสำเร็จ!</h3>
+
+            <div class="my-4 py-3 bg-black/30 rounded-xl">
+                <p class="text-sm text-gray-400">ตัวเลขที่ได้รับ</p>
+                <p class="text-4xl font-bold text-amber-400 tracking-widest">67</p>
+            </div>
+
+            <p class="text-amber-200">คะแนน: ${drumGameState.score}</p>
+            <p class="text-sm text-gray-400 mt-2">ได้รับการ์ดกลอง</p>
+            `;
+
+        
+        await unlockInstrument('drum');
+      } else if (success) {
+        contentDiv.innerHTML = `
+          <div class="text-5xl mb-4">🎉</div>
+          <h3 class="text-xl font-bold text-green-400 mb-2">เล่นได้ดีมาก!</h3>
+          <p class="text-amber-200">คะแนน: ${drumGameState.score}</p>
+          <p class="text-sm text-gray-400 mt-2">คุณได้ปลดผนึกกลองแล้ว</p>
+        `;
+      } else {
+        contentDiv.innerHTML = `
+          <div class="text-5xl mb-4">😅</div>
+          <h3 class="text-xl font-bold text-red-400 mb-2">ลองอีกครั้ง</h3>
+          <p class="text-amber-200">คะแนน: ${drumGameState.score}</p>
+          <p class="text-sm text-gray-400 mt-2">ต้องได้อย่างน้อย 30 คะแนน</p>
+          <button onclick="resetDrumGame()" class="mt-4 px-6 py-2 bg-amber-600 rounded-xl">เริ่มใหม่</button>
+        `;
+      }
+    }
+    
+    // ========== PONGLANG GAME ==========
+    let ponglangGameState = {
+      round: 1,
+      score: 0,
+      sequence: [],
+      playerSequence: [],
+      isPlaying: false,
+      isPlayerTurn: false
+    };
+    
+    function resetPonglangGame() {
+      ponglangGameState = {
+        round: 1,
+        score: 0,
+        sequence: [],
+        playerSequence: [],
+        isPlaying: false,
+        isPlayerTurn: false
+      };
+      document.getElementById('ponglang-round').textContent = '1';
+      document.getElementById('ponglang-score').textContent = '0';
+      document.getElementById('sequence-display').innerHTML = '<span class="text-gray-500">กดเริ่มเพื่อดูลำดับ</span>';
+      document.getElementById('ponglang-result').classList.add('hidden');
+      document.getElementById('ponglang-start-btn').classList.remove('hidden');
+    }
+    
+    function startPonglangGame() {
+      ponglangGameState.isPlaying = true;
+      document.getElementById('ponglang-start-btn').classList.add('hidden');
+      generatePonglangSequence();
+      playPonglangSequence();
+    }
+    
+    function generatePonglangSequence() {
+      const length = 3 + ponglangGameState.round;
+      ponglangGameState.sequence = [];
+      for (let i = 0; i < length; i++) {
+        ponglangGameState.sequence.push(Math.floor(Math.random() * 8));
+      }
+    }
+    
+    function playPonglangSequence() {
+      const display = document.getElementById('sequence-display');
+      display.innerHTML = '<span class="text-amber-400 font-semibold">ดูลำดับ...</span>';
+      
+      const bars = document.querySelectorAll('.ponglang-bar');
+      let i = 0;
+      
+      const interval = setInterval(() => {
+        if (i < ponglangGameState.sequence.length) {
+          const noteIndex = ponglangGameState.sequence[i];
+          bars[noteIndex].classList.add('active');
+          
+          display.innerHTML = ponglangGameState.sequence.slice(0, i + 1).map((n, idx) => 
+            `<div class="w-12 h-12 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 text-white font-bold text-lg flex items-center justify-center border-2 border-amber-300 shadow-lg">${n + 1}</div>`
+          ).join('');
+          
+          setTimeout(() => bars[noteIndex].classList.remove('active'), 300);
+          i++;
+        } else {
+          clearInterval(interval);
+          setTimeout(() => {
+            display.innerHTML = '<span class="text-green-400 font-semibold">ตาคุณ! ตีตามลำดับ</span>';
+            ponglangGameState.isPlayerTurn = true;
+            ponglangGameState.playerSequence = [];
+          }, 500);
+        }
+      }, 500);
+    }
+    
+    function hitPonglang(note) {
+      if (!ponglangGameState.isPlayerTurn) return;
+      
+      const bars = document.querySelectorAll('.ponglang-bar');
+      bars[note].classList.add('active');
+      setTimeout(() => bars[note].classList.remove('active'), 200);
+      
+      ponglangGameState.playerSequence.push(note);
+      
+      const display = document.getElementById('sequence-display');
+      display.innerHTML = ponglangGameState.playerSequence.map(n => 
+        `<div class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-green-700 text-white font-bold text-lg flex items-center justify-center border-2 border-green-300 shadow-lg">${n + 1}</div>`
+      ).join('');
+      
+      if (ponglangGameState.playerSequence.length === ponglangGameState.sequence.length) {
+        checkPonglangSequence();
+      }
+    }
+    
+    function checkPonglangSequence() {
+      ponglangGameState.isPlayerTurn = false;
+      
+      let correct = true;
+      for (let i = 0; i < ponglangGameState.sequence.length; i++) {
+        if (ponglangGameState.sequence[i] !== ponglangGameState.playerSequence[i]) {
+          correct = false;
+          break;
+        }
+      }
+      
+      if (correct) {
+        ponglangGameState.score += ponglangGameState.round * 10;
+        document.getElementById('ponglang-score').textContent = ponglangGameState.score;
+        showToast('ถูกต้อง! 🎵');
+        
+        if (ponglangGameState.round >= 4) {
+          completePonglangGame(true);
+        } else {
+          ponglangGameState.round++;
+          document.getElementById('ponglang-round').textContent = ponglangGameState.round;
+          setTimeout(() => {
+            generatePonglangSequence();
+            playPonglangSequence();
+          }, 1000);
+        }
+      } else {
+        showToast('ผิดพลาด! ลองใหม่');
+        if (ponglangGameState.score >= 20) {
+          completePonglangGame(true);
+        } else {
+          completePonglangGame(false);
+        }
+      }
+    }
+    
+    async function completePonglangGame(success) {
+      const resultDiv = document.getElementById('ponglang-result');
+      const contentDiv = document.getElementById('ponglang-result-content');
+      
+      resultDiv.classList.remove('hidden');
+      
+      if (success && !unlockedInstruments.has('ponglang')) {
+        contentDiv.innerHTML = `
+            <div class="text-5xl mb-4 spirit-rise">🎶</div>
+            <h3 class="text-xl font-bold text-amber-400 mb-2">ปลดผนึกโปงลางสำเร็จ!</h3>
+
+            <div class="my-4 py-3 bg-black/30 rounded-xl">
+                <p class="text-sm text-gray-400">ตัวเลขที่ได้รับ</p>
+                <p class="text-4xl font-bold text-amber-400 tracking-widest">12</p>
+            </div>
+
+            <p class="text-amber-200">คะแนน: ${ponglangGameState.score}</p>
+            <p class="text-sm text-gray-400 mt-2">ได้รับการ์ดโปงลาง</p>
+            `;
+
+        
+        await unlockInstrument('ponglang');
+      } else if (success) {
+        contentDiv.innerHTML = `
+          <div class="text-5xl mb-4">🎉</div>
+          <h3 class="text-xl font-bold text-green-400 mb-2">เล่นได้ดีมาก!</h3>
+          <p class="text-amber-200">คะแนน: ${ponglangGameState.score}</p>
+          <p class="text-sm text-gray-400 mt-2">คุณได้ปลดผนึกโปงลางแล้ว</p>
+        `;
+      } else {
+        contentDiv.innerHTML = `
+          <div class="text-5xl mb-4">😅</div>
+          <h3 class="text-xl font-bold text-red-400 mb-2">ลองอีกครั้ง</h3>
+          <p class="text-amber-200">คะแนน: ${ponglangGameState.score}</p>
+          <p class="text-sm text-gray-400 mt-2">ต้องได้อย่างน้อย 20 คะแนน</p>
+          <button onclick="resetPonglangGame()" class="mt-4 px-6 py-2 bg-amber-600 rounded-xl">เริ่มใหม่</button>
+        `;
+      }
+    }
+    
+    // ========== CODE INPUT ==========
+    function setupCodeInputs() {
+      const inputs = document.querySelectorAll('.code-digit');
+      inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          const value = e.target.value;
+          if (value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          }
+        });
+        
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !input.value && index > 0) {
+            inputs[index - 1].focus();
+          }
+        });
+      });
+    }
+    
+    async function verifyCode() {
+      const instrument = document.getElementById('instrument-select').value;
+      const code = [
+        document.getElementById('code-1').value,
+        document.getElementById('code-2').value,
+        document.getElementById('code-3').value,
+        document.getElementById('code-4').value
+      ].join('');
+      
+      const resultDiv = document.getElementById('code-result');
+      const contentDiv = document.getElementById('code-result-content');
+      
+      resultDiv.classList.remove('hidden');
+      
+      if (code === correctCodes[instrument]) {
+        if (!unlockedInstruments.has(instrument)) {
+          const instrumentName = instrument === 'pin' ? 'พิณ' : 'แคน';
+          const emoji = instrument === 'pin' ? '🎸' : '🎶';
+          
+          contentDiv.innerHTML = `
+            <div class="text-5xl mb-4 spirit-rise">${emoji}</div>
+            <h3 class="text-xl font-bold text-amber-400 mb-2">ปลดผนึก${instrumentName}สำเร็จ!</h3>
+            <p class="text-sm text-gray-400">ได้รับการ์ด${instrumentName}</p>
+          `;
+          
+          await unlockInstrument(instrument);
+        } else {
+          contentDiv.innerHTML = `
+            <div class="text-5xl mb-4">✅</div>
+            <h3 class="text-xl font-bold text-green-400 mb-2">รหัสถูกต้อง!</h3>
+            <p class="text-sm text-gray-400">คุณได้ปลดผนึกเครื่องดนตรีนี้แล้ว</p>
+          `;
+        }
+      } else {
+        contentDiv.innerHTML = `
+          <div class="text-5xl mb-4">❌</div>
+          <h3 class="text-xl font-bold text-red-400 mb-2">รหัสไม่ถูกต้อง</h3>
+          <p class="text-sm text-gray-400">ตรวจสอบรหัสจากการ์ดอีกครั้ง</p>
+        `;
+      }
+      
+      // Clear inputs
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`code-${i}`).value = '';
+      }
+    }
+    
+    // ========== UNLOCK INSTRUMENT ==========
+    async function unlockInstrument(instrument) {
+      if (gameData.length >= 999) {
+        showToast('ไม่สามารถบันทึกได้ ข้อมูลเต็ม');
+        return;
+      }
+      
+      // Check if already unlocked
+      const existing = gameData.find(item => item.instrument === instrument);
+      if (existing) {
+        return;
+      }
+      
+      if (window.dataSdk) {
+        const result = await window.dataSdk.create({
+          id: `instrument-${instrument}-${Date.now()}`,
+          instrument: instrument,
+          unlocked: true,
+          unlockedAt: new Date().toISOString()
+        });
+        
+        if (!result.isOk) {
+          showToast('เกิดข้อผิดพลาดในการบันทึก');
+        }
+      } else {
+        // Fallback for testing
+        unlockedInstruments.add(instrument);
+        updateInstrumentDisplay();
+        updateFinalCodeScreen();
+      }
+    }
+    
+    // ========== FINAL CODE SCREEN ==========
+    function updateFinalCodeScreen() {
+      const instrumentsDiv = document.getElementById('final-instruments');
+      const codeDisplay = document.getElementById('final-code-number');
+      const messageDiv = document.getElementById('final-message');
+      const victoryDiv = document.getElementById('victory-section');
+      
+      const instruments = [
+        { id: 'drum', name: 'กลอง', emoji: '🥁', digit: '1' },
+        { id: 'ponglang', name: 'โปงลาง', emoji: '🎵', digit: '3' },
+        { id: 'pin', name: 'พิณ', emoji: '🎸', digit: '5' },
+        { id: 'kaen', name: 'แคน', emoji: '🎶', digit: '7' }
+      ];
+      
+      instrumentsDiv.innerHTML = instruments.map(inst => `
+        <div class="text-center ${unlockedInstruments.has(inst.id) ? '' : 'opacity-40'}">
+          <div class="text-3xl mb-1">${inst.emoji}</div>
+          <div class="text-xs ${unlockedInstruments.has(inst.id) ? 'text-amber-400' : 'text-gray-500'}">${inst.name}</div>
+          <div class="text-lg font-bold ${unlockedInstruments.has(inst.id) ? 'text-amber-400' : 'text-gray-600'}">
+            ${unlockedInstruments.has(inst.id) ? inst.digit : '?'}
+          </div>
+        </div>
+      `).join('');
+      
+      if (unlockedInstruments.size === 4) {
+        codeDisplay.textContent = finalCode;
+        messageDiv.classList.add('hidden');
+        victoryDiv.classList.remove('hidden');
+      } else {
+        const codeStr = instruments.map(inst => 
+          unlockedInstruments.has(inst.id) ? inst.digit : '?'
+        ).join('');
+        codeDisplay.textContent = codeStr;
+        messageDiv.classList.remove('hidden');
+        victoryDiv.classList.add('hidden');
+      }
+    }
+    
+    function submitCardCode() {
+        const instrument = document.getElementById('instrument-select').value;
+        const code = document.getElementById('card-code-input').value.trim();
+        const resultBox = document.getElementById('card-code-result');
+        const resultNumber = document.getElementById('result-number');
+
+        let result = null;
+
+        // ตรวจเงื่อนไข
+        if (instrument === 'pin' && code === '4529') {
+            result = '46';
+        } else if (instrument === 'kaen' && code === '8753') {
+            result = '55';
+        } else {
+            alert('รหัสไม่ถูกต้อง');
+            return;
+        }
+
+        // แสดงผล
+        resultNumber.textContent = result;
+        resultBox.classList.remove('hidden');
+    }
+
+    function submitFinalCode() {
+        const input = document.getElementById('final-input').value.trim();
+        const display = document.getElementById('final-code-number');
+        const message = document.getElementById('final-message');
+        const victory = document.getElementById('victory-section');
+
+        if (input === '1276') {
+            display.textContent = '982';
+            message.innerHTML = '<p class="text-amber-400">รหัสถูกต้อง</p>';
+            victory.classList.remove('hidden');
+        } else {
+            display.textContent = '????';
+            message.innerHTML = '<p class="text-red-400">รหัสไม่ถูกต้อง</p>';
+            victory.classList.add('hidden');
+        }
+    }
+
+
+    // ========== TOAST ==========
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      
+      toastMessage.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+    
+    // Initialize
+    initApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c976be362dd3e68',t:'MTc3MDM0NzA4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
