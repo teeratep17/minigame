@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="th" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>พิธีบั้งไฟอัญเชิญพญานาค</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&amp;family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Sarabun', sans-serif; }
+    .title-font { font-family: 'Chakra Petch', sans-serif; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+    }
+    
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 200, 100, 0.5)); }
+      50% { filter: drop-shadow(0 0 20px rgba(255, 200, 100, 0.9)); }
+    }
+    
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    
+    @keyframes naga-rise {
+      0% { transform: translateY(100%) scale(0.5); opacity: 0; }
+      50% { transform: translateY(-10%) scale(1.1); opacity: 1; }
+      100% { transform: translateY(0%) scale(1); opacity: 1; }
+    }
+    
+    @keyframes rocket-launch {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-200px) scale(0.8); }
+      100% { transform: translateY(-400px) scale(0.3); opacity: 0; }
+    }
+    
+    @keyframes firework {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    .glow-animation { animation: glow 2s ease-in-out infinite; }
+    .naga-rise { animation: naga-rise 2s ease-out forwards; }
+    .rocket-launch { animation: rocket-launch 2s ease-in forwards; }
+    
+    .orb-button {
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    
+    .orb-button:active {
+      transform: scale(0.9);
+    }
+    
+    .orb-button.active {
+      animation: pulse-ring 0.3s ease-out;
+    }
+    
+    .orb-hit {
+      animation: sparkle 0.5s ease-out;
+    }
+    
+    .pattern-bg {
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 150, 50, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(100, 200, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(200, 100, 255, 0.05) 0%, transparent 70%);
+    }
+    
+    .drag-item {
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    
+    .drag-item:active {
+      cursor: grabbing;
+    }
+    
+    .drag-item.dragging {
+      opacity: 0.7;
+      z-index: 100;
+    }
+    
+    .drop-zone {
+      transition: all 0.2s ease;
+    }
+    
+    .drop-zone.highlight {
+      background: rgba(255, 200, 100, 0.3);
+      border-color: #ffc864;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 pattern-bg overflow-auto">
+  <div id="app" class="min-h-full w-full"><!-- Main Menu Screen -->
+   <div id="menu-screen" class="min-h-full flex flex-col items-center justify-center p-4">
+    <div class="text-center mb-8"><!-- Naga Symbol -->
+     <div class="float-animation glow-animation mb-6">
+      <svg width="120" height="120" viewbox="0 0 120 120" class="mx-auto"><defs>
+        <lineargradient id="nagaGold" x1="0%" y1="0%" x2="100%" y2="100%">
+         <stop offset="0%" style="stop-color:#ffd700" />
+         <stop offset="50%" style="stop-color:#ffaa00" />
+         <stop offset="100%" style="stop-color:#ff8c00" />
+        </lineargradient>
+       </defs> <circle cx="60" cy="60" r="55" fill="none" stroke="url(#nagaGold)" stroke-width="2" opacity="0.5" /> <path d="M60 20 Q80 40 70 60 Q60 80 60 100 M60 20 Q40 40 50 60 Q60 80 60 100" fill="none" stroke="url(#nagaGold)" stroke-width="3" stroke-linecap="round" /> <circle cx="60" cy="35" r="8" fill="url(#nagaGold)" /> <circle cx="52" cy="32" r="2" fill="#1a1a2e" /> <circle cx="68" cy="32" r="2" fill="#1a1a2e" />
+      </svg>
+     </div>
+     <h1 id="main-title" class="title-font text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 mb-2">พิธีบั้งไฟอัญเชิญพญานาค</h1>
+     <p class="text-amber-200/70 text-sm">รวบรวมชิ้นส่วนบั้งไฟศักดิ์สิทธิ์</p>
+    </div><!-- Item Collection Status -->
+    <div class="grid grid-cols-4 gap-3 mb-8 p-4 bg-slate-800/50 rounded-2xl border border-amber-500/20">
+     <div id="item-core" class="item-slot flex flex-col items-center p-2 rounded-lg bg-slate-700/50 border border-slate-600/50">
+      <div class="w-10 h-10 flex items-center justify-center text-2xl opacity-30">
+       🎋
+      </div><span class="text-xs text-slate-400 mt-1">แกนบั้งไฟ</span>
+     </div>
+     <div id="item-gunpowder" class="item-slot flex flex-col items-center p-2 rounded-lg bg-slate-700/50 border border-slate-600/50">
+      <div class="w-10 h-10 flex items-center justify-center text-2xl opacity-30">
+       ✨
+      </div><span class="text-xs text-slate-400 mt-1">ดินปืน</span>
+     </div>
+     <div id="item-pattern" class="item-slot flex flex-col items-center p-2 rounded-lg bg-slate-700/50 border border-slate-600/50">
+      <div class="w-10 h-10 flex items-center justify-center text-2xl opacity-30">
+       📜
+      </div><span class="text-xs text-slate-400 mt-1">ลวดลาย</span>
+     </div>
+     <div id="item-head" class="item-slot flex flex-col items-center p-2 rounded-lg bg-slate-700/50 border border-slate-600/50">
+      <div class="w-10 h-10 flex items-center justify-center text-2xl opacity-30">
+       🐉
+      </div><span class="text-xs text-slate-400 mt-1">หัวบั้งไฟ</span>
+     </div>
+    </div><!-- Game Selection -->
+    <div class="w-full max-w-md space-y-3"><button onclick="startGame('core')" class="w-full py-4 px-6 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl text-white font-semibold shadow-lg shadow-emerald-500/30 transition-all transform hover:scale-[1.02] flex items-center justify-between"> <span class="flex items-center gap-3"> <span class="text-2xl">🎋</span> <span>เรียงแกนบั้งไฟ</span> </span> <span class="text-emerald-200">▶</span> </button> <button onclick="startGame('orb')" class="w-full py-4 px-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-xl text-white font-semibold shadow-lg shadow-purple-500/30 transition-all transform hover:scale-[1.02] flex items-center justify-between"> <span class="flex items-center gap-3"> <span class="text-2xl">🔮</span> <span>ปลุกพลังลูกแก้ว</span> </span> <span class="text-purple-200">▶</span> </button> <button onclick="startGame('code')" class="w-full py-4 px-6 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 rounded-xl text-white font-semibold shadow-lg shadow-amber-500/30 transition-all transform hover:scale-[1.02] flex items-center justify-between"> <span class="flex items-center gap-3"> <span class="text-2xl">🔢</span> <span>กรอกรหัสพิธีกรรม</span> </span> <span class="text-amber-200">▶</span> </button>
+    </div>
+   </div><!-- Core Alignment Game -->
+   <div id="core-game" class="min-h-full flex flex-col items-center p-4 hidden">
+    <div class="w-full max-w-md">
+     <div class="flex justify-between items-center mb-4"><button onclick="showMenu()" class="p-2 text-amber-300 hover:text-amber-100">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+       </svg></button>
+      <h2 class="title-font text-xl font-bold text-amber-300">เรียงแกนบั้งไฟ</h2>
+      <div class="w-8"></div>
+     </div><!-- Round & Timer -->
+     <div class="flex justify-between items-center mb-4 p-3 bg-slate-800/70 rounded-xl">
+      <div class="text-center">
+       <div class="text-xs text-slate-400">
+        ด่าน
+       </div>
+       <div id="core-round" class="text-xl font-bold text-emerald-400">
+        1/3
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-xs text-slate-400">
+        เวลา
+       </div>
+       <div id="core-timer" class="text-xl font-bold text-amber-400">
+        30
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-xs text-slate-400">
+        คะแนน
+       </div>
+       <div id="core-score" class="text-xl font-bold text-purple-400">
+        0
+       </div>
+      </div>
+     </div><!-- Target Pattern -->
+     <div class="mb-4">
+      <div class="text-center text-sm text-slate-400 mb-2">
+       รูปแบบเป้าหมาย
+      </div>
+      <div id="target-pattern" class="flex justify-center gap-1 p-3 bg-slate-800/50 rounded-xl border border-emerald-500/30"><!-- Target blocks will be generated -->
+      </div>
+     </div><!-- Player Area -->
+     <div class="mb-4">
+      <div class="text-center text-sm text-slate-400 mb-2">
+       ลากเพื่อเรียงลำดับ
+      </div>
+      <div id="player-area" class="flex justify-center gap-1 p-3 bg-slate-800/50 rounded-xl border border-amber-500/30 min-h-[80px]"><!-- Draggable blocks will be generated -->
+      </div>
+     </div><button id="core-check-btn" onclick="checkCorePattern()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 rounded-xl text-white font-bold shadow-lg transition-all"> ตรวจสอบ </button>
+    </div>
+   </div><!-- Orb Rhythm Game -->
+   <div id="orb-game" class="min-h-full flex flex-col items-center p-4 hidden">
+    <div class="w-full max-w-md">
+     <div class="flex justify-between items-center mb-4"><button onclick="showMenu()" class="p-2 text-amber-300 hover:text-amber-100">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+       </svg></button>
+      <h2 class="title-font text-xl font-bold text-amber-300">ปลุกพลังพญานาค</h2>
+      <div class="w-8"></div>
+     </div><!-- Score Display -->
+     <div class="flex justify-between items-center mb-6 p-3 bg-slate-800/70 rounded-xl">
+      <div class="text-center">
+       <div class="text-xs text-slate-400">
+        ด่าน
+       </div>
+       <div id="orb-level" class="text-xl font-bold text-purple-400">
+        1/3
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-xs text-slate-400">
+        คอมโบ
+       </div>
+       <div id="orb-combo" class="text-xl font-bold text-pink-400">
+        0
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-xs text-slate-400">
+        พลังนาค
+       </div>
+       <div id="orb-power" class="text-xl font-bold text-amber-400">
+        0%
+       </div>
+      </div>
+     </div><!-- Pattern Display -->
+     <div id="orb-pattern-display" class="text-center mb-6 p-4 bg-slate-800/50 rounded-xl border border-purple-500/30 min-h-[60px]">
+      <div class="text-slate-400 text-sm">
+       จดจำลำดับลูกแก้ว
+      </div>
+     </div><!-- Orb Buttons -->
+     <div class="flex justify-center gap-6 mb-8"><button id="orb-1" onclick="hitOrb(0)" class="orb-button w-20 h-20 rounded-full bg-gradient-to-br from-red-400 to-red-600 shadow-lg shadow-red-500/50 border-4 border-red-300/50 flex items-center justify-center"> <span class="text-3xl">🔴</span> </button> <button id="orb-2" onclick="hitOrb(1)" class="orb-button w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 shadow-lg shadow-blue-500/50 border-4 border-blue-300/50 flex items-center justify-center"> <span class="text-3xl">🔵</span> </button> <button id="orb-3" onclick="hitOrb(2)" class="orb-button w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-lg shadow-green-500/50 border-4 border-green-300/50 flex items-center justify-center"> <span class="text-3xl">🟢</span> </button>
+     </div><!-- Start Button --> <button id="orb-start-btn" onclick="startOrbRound()" class="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 rounded-xl text-white font-bold shadow-lg transition-all"> เริ่มเล่น </button> <!-- Status Message -->
+     <div id="orb-status" class="text-center mt-4 text-slate-400 text-sm"></div>
+    </div>
+   </div><!-- Code Entry Screen -->
+   <div id="code-screen" class="min-h-full flex flex-col items-center justify-center p-4 hidden">
+    <div class="w-full max-w-md">
+     <div class="flex justify-between items-center mb-6"><button onclick="showMenu()" class="p-2 text-amber-300 hover:text-amber-100">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+       </svg></button>
+      <h2 class="title-font text-xl font-bold text-amber-300">รหัสพิธีกรรม</h2>
+      <div class="w-8"></div>
+     </div><!-- Hint -->
+     <div class="p-4 bg-slate-800/50 rounded-xl border border-amber-500/20 mb-6">
+      <p class="text-amber-200/80 text-sm text-center italic">"เมื่อรวมแกนบั้งไฟเข้ากับหัว<br>
+        นำดินปืนผสานลวดลาย<br>
+        เมื่อนั้นพญานาคจึงปรากฏ"</p>
+     </div><!-- Code Input -->
+     <div class="flex justify-center gap-3 mb-6"><input type="text" maxlength="1" class="code-input w-14 h-16 text-center text-2xl font-bold bg-slate-800 border-2 border-amber-500/50 rounded-xl text-amber-300 focus:outline-none focus:border-amber-400" oninput="moveToNext(this, 0)"> <input type="text" maxlength="1" class="code-input w-14 h-16 text-center text-2xl font-bold bg-slate-800 border-2 border-amber-500/50 rounded-xl text-amber-300 focus:outline-none focus:border-amber-400" oninput="moveToNext(this, 1)"> <input type="text" maxlength="1" class="code-input w-14 h-16 text-center text-2xl font-bold bg-slate-800 border-2 border-amber-500/50 rounded-xl text-amber-300 focus:outline-none focus:border-amber-400" oninput="moveToNext(this, 2)">
+     </div><button onclick="submitCode()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-xl text-white font-bold shadow-lg shadow-amber-500/30 transition-all"> ปลดล็อคพิธีกรรม </button>
+     <div id="code-message" class="text-center mt-4 text-sm"></div>
+    </div>
+   </div><!-- Victory Screen -->
+   <div id="victory-screen" class="min-h-full flex flex-col items-center justify-center p-4 hidden">
+    <div class="text-center"><!-- Naga Animation -->
+     <div id="naga-animation" class="naga-rise mb-8">
+      <svg width="200" height="200" viewbox="0 0 200 200" class="mx-auto glow-animation"><defs>
+        <lineargradient id="nagaBodyGold" x1="0%" y1="0%" x2="100%" y2="100%">
+         <stop offset="0%" style="stop-color:#ffd700" />
+         <stop offset="50%" style="stop-color:#ffaa00" />
+         <stop offset="100%" style="stop-color:#ff6600" />
+        </lineargradient>
+        <filter id="glow">
+         <fegaussianblur stddeviation="3" result="coloredBlur" />
+         <femerge>
+          <femergenode in="coloredBlur" />
+          <femergenode in="SourceGraphic" />
+         </femerge>
+        </filter>
+       </defs> <!-- Naga Body --> <path d="M100 180 Q60 140 70 100 Q80 60 100 40 Q120 60 130 100 Q140 140 100 180" fill="url(#nagaBodyGold)" filter="url(#glow)" /> <!-- Naga Head --> <ellipse cx="100" cy="45" rx="25" ry="20" fill="url(#nagaBodyGold)" /> <!-- Crown --> <path d="M80 35 L85 20 L90 30 L95 15 L100 30 L105 15 L110 30 L115 20 L120 35" fill="#ffd700" stroke="#ffaa00" stroke-width="1" /> <!-- Eyes --> <circle cx="92" cy="42" r="4" fill="#1a1a2e" /> <circle cx="108" cy="42" r="4" fill="#1a1a2e" /> <circle cx="93" cy="41" r="1.5" fill="#fff" /> <circle cx="109" cy="41" r="1.5" fill="#fff" /> <!-- Spirit Stone --> <circle cx="100" cy="85" r="15" fill="#64ffda" opacity="0.9" filter="url(#glow)" /> <circle cx="100" cy="85" r="10" fill="#a7ffeb" /> <circle cx="95" cy="80" r="3" fill="#fff" opacity="0.8" />
+      </svg>
+     </div>
+     <h2 class="title-font text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-400 mb-4">พญานาคปรากฏกาย!</h2>
+     <p class="text-amber-200/80 mb-6 max-w-sm mx-auto">พญานาคมอบ "หินวิญญาณแห่งสายน้ำ" ให้แก่ท่าน<br>
+       โลกได้รับการฟื้นฟูเพิ่มขึ้นอีกส่วนหนึ่ง</p><!-- Spirit Stone -->
+     <div class="inline-block p-4 bg-gradient-to-br from-teal-500/20 to-cyan-500/20 rounded-2xl border border-cyan-400/30 mb-8">
+      <div class="text-4xl mb-2">
+       💎
+      </div>
+      <div class="text-cyan-300 font-semibold">
+       หินวิญญาณแห่งสายน้ำ
+      </div>
+      <div class="text-cyan-400/70 text-sm">
+       ได้รับแล้ว!
+      </div>
+     </div><button onclick="resetGame()" class="py-3 px-8 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-xl text-white font-bold shadow-lg transition-all"> เล่นอีกครั้ง </button>
+    </div>
+   </div>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      game_title: 'พิธีบั้งไฟอัญเชิญพญานาค',
+      background_color: '#0f172a',
+      accent_color: '#fbbf24',
+      text_color: '#fef3c7',
+      button_color: '#d97706',
+      secondary_color: '#1e293b'
+    };
+    
+    let config = { ...defaultConfig };
+    
+    // Game State
+    const gameState = {
+      items: {
+        core: false,
+        gunpowder: false,
+        pattern: false,
+        head: false
+      },
+      coreGame: {
+        round: 1,
+        score: 0,
+        timer: null,
+        timeLeft: 30
+      },
+      orbGame: {
+        level: 1,
+        combo: 0,
+        power: 0,
+        pattern: [],
+        playerInput: [],
+        isShowingPattern: false,
+        isPlayerTurn: false
+      }
+    };
+    
+    // Secret code for final unlock (can be changed)
+    const SECRET_CODE = '789';
+    
+    // Initialize SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = { ...defaultConfig, ...newConfig };
+          applyConfig();
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [
+            {
+              get: () => cfg.background_color || defaultConfig.background_color,
+              set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+            },
+            {
+              get: () => cfg.secondary_color || defaultConfig.secondary_color,
+              set: (v) => { cfg.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); }
+            },
+            {
+              get: () => cfg.text_color || defaultConfig.text_color,
+              set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+            },
+            {
+              get: () => cfg.accent_color || defaultConfig.accent_color,
+              set: (v) => { cfg.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }
+            },
+            {
+              get: () => cfg.button_color || defaultConfig.button_color,
+              set: (v) => { cfg.button_color = v; window.elementSdk.setConfig({ button_color: v }); }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['game_title', cfg.game_title || defaultConfig.game_title]
+        ])
+      });
+    }
+    
+    function applyConfig() {
+      const title = document.getElementById('main-title');
+      if (title) {
+        title.textContent = config.game_title || defaultConfig.game_title;
+      }
+    }
+    
+    // Screen Navigation
+    function showScreen(screenId) {
+      document.querySelectorAll('#app > div').forEach(screen => {
+        screen.classList.add('hidden');
+      });
+      document.getElementById(screenId).classList.remove('hidden');
+    }
+    
+    function showMenu() {
+      clearTimers();
+      showScreen('menu-screen');
+      updateItemDisplay();
+    }
+    
+    function startGame(type) {
+      switch(type) {
+        case 'core':
+          showScreen('core-game');
+          initCoreGame();
+          break;
+        case 'orb':
+          showScreen('orb-game');
+          initOrbGame();
+          break;
+        case 'code':
+          showScreen('code-screen');
+          break;
+      }
+    }
+    
+    // Item Display Update
+    function updateItemDisplay() {
+      const items = ['core', 'gunpowder', 'pattern', 'head'];
+      const icons = ['🎋', '✨', '📜', '🐉'];
+      
+      items.forEach((item, i) => {
+        const slot = document.getElementById(`item-${item}`);
+        const iconDiv = slot.querySelector('div');
+        if (gameState.items[item]) {
+          iconDiv.classList.remove('opacity-30');
+          iconDiv.classList.add('glow-animation');
+          slot.classList.add('border-amber-500/50', 'bg-amber-900/20');
+        }
+      });
+    }
+    
+    // ==================== CORE ALIGNMENT GAME ====================
+    const coreColors = ['#ef4444', '#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ec4899'];
+    
+    function initCoreGame() {
+      gameState.coreGame = {
+        round: 1,
+        score: 0,
+        timer: null,
+        timeLeft: 30
+      };
+      startCoreRound();
+    }
+    
+    function startCoreRound() {
+      const round = gameState.coreGame.round;
+      const blockCount = 3 + round; // 4, 5, 6 blocks per round
+      
+      // Generate target pattern
+      const targetPattern = [];
+      for (let i = 0; i < blockCount; i++) {
+        targetPattern.push(coreColors[i % coreColors.length]);
+      }
+      
+      // Display target
+      const targetEl = document.getElementById('target-pattern');
+      targetEl.innerHTML = targetPattern.map((color, i) => `
+        <div class="w-12 h-16 rounded-lg shadow-md" style="background: ${color}; box-shadow: 0 4px 6px ${color}40;"></div>
+      `).join('');
+      
+      // Create shuffled player blocks
+      const shuffled = [...targetPattern].sort(() => Math.random() - 0.5);
+      const playerEl = document.getElementById('player-area');
+      playerEl.innerHTML = '';
+      
+      shuffled.forEach((color, i) => {
+        const block = document.createElement('div');
+        block.className = 'drag-item w-12 h-16 rounded-lg shadow-md cursor-grab';
+        block.style.background = color;
+        block.style.boxShadow = `0 4px 6px ${color}40`;
+        block.dataset.color = color;
+        block.draggable = true;
+        
+        block.addEventListener('dragstart', handleDragStart);
+        block.addEventListener('dragend', handleDragEnd);
+        block.addEventListener('dragover', handleDragOver);
+        block.addEventListener('drop', handleDrop);
+        
+        // Touch events
+        block.addEventListener('touchstart', handleTouchStart, { passive: false });
+        block.addEventListener('touchmove', handleTouchMove, { passive: false });
+        block.addEventListener('touchend', handleTouchEnd);
+        
+        playerEl.appendChild(block);
+      });
+      
+      // Store target for checking
+      playerEl.dataset.target = JSON.stringify(targetPattern);
+      
+      // Start timer
+      gameState.coreGame.timeLeft = 30 - (round - 1) * 5; // Less time each round
+      updateCoreUI();
+      startCoreTimer();
+    }
+    
+    let draggedElement = null;
+    
+    function handleDragStart(e) {
+      draggedElement = e.target;
+      e.target.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    }
+    
+    function handleDragEnd(e) {
+      e.target.classList.remove('dragging');
+      draggedElement = null;
+    }
+    
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    }
+    
+    function handleDrop(e) {
+      e.preventDefault();
+      if (draggedElement && draggedElement !== e.target) {
+        const parent = e.target.parentNode;
+        const allBlocks = [...parent.children];
+        const draggedIndex = allBlocks.indexOf(draggedElement);
+        const targetIndex = allBlocks.indexOf(e.target);
+        
+        if (draggedIndex < targetIndex) {
+          parent.insertBefore(draggedElement, e.target.nextSibling);
+        } else {
+          parent.insertBefore(draggedElement, e.target);
+        }
+      }
+    }
+    
+    // Touch handling for mobile
+    let touchStartX = 0;
+    let touchElement = null;
+    
+    function handleTouchStart(e) {
+      touchElement = e.target;
+      touchElement.classList.add('dragging');
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+    }
+    
+    function handleTouchMove(e) {
+      e.preventDefault();
+      if (!touchElement) return;
+      
+      const touch = e.touches[0];
+      const playerArea = document.getElementById('player-area');
+      const blocks = [...playerArea.children];
+      
+      const touchedBlock = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (touchedBlock && touchedBlock !== touchElement && blocks.includes(touchedBlock)) {
+        const touchedIndex = blocks.indexOf(touchedBlock);
+        const currentIndex = blocks.indexOf(touchElement);
+        
+        if (currentIndex < touchedIndex) {
+          playerArea.insertBefore(touchElement, touchedBlock.nextSibling);
+        } else {
+          playerArea.insertBefore(touchElement, touchedBlock);
+        }
+      }
+    }
+    
+    function handleTouchEnd(e) {
+      if (touchElement) {
+        touchElement.classList.remove('dragging');
+        touchElement = null;
+      }
+    }
+    
+    function checkCorePattern() {
+      const playerEl = document.getElementById('player-area');
+      const target = JSON.parse(playerEl.dataset.target);
+      const current = [...playerEl.children].map(el => el.dataset.color);
+      
+      const isCorrect = JSON.stringify(target) === JSON.stringify(current);
+      
+      if (isCorrect) {
+        gameState.coreGame.score += gameState.coreGame.timeLeft * 10;
+        
+        if (gameState.coreGame.round >= 3) {
+          // Game complete!
+          clearTimers();
+          gameState.items.core = true;
+          showItemObtained('🎋', 'แกนบั้งไฟ', () => showMenu());
+        } else {
+          gameState.coreGame.round++;
+          startCoreRound();
+        }
+      } else {
+        // Wrong pattern - shake effect
+        playerEl.style.animation = 'none';
+        playerEl.offsetHeight; // Trigger reflow
+        playerEl.style.animation = 'shake 0.5s ease';
+      }
+      
+      updateCoreUI();
+    }
+    
+    function startCoreTimer() {
+      clearTimers();
+      gameState.coreGame.timer = setInterval(() => {
+        gameState.coreGame.timeLeft--;
+        updateCoreUI();
+        
+        if (gameState.coreGame.timeLeft <= 0) {
+          clearTimers();
+          // Time's up - restart round
+          startCoreRound();
+        }
+      }, 1000);
+    }
+    
+    function updateCoreUI() {
+      document.getElementById('core-round').textContent = `${gameState.coreGame.round}/3`;
+      document.getElementById('core-timer').textContent = gameState.coreGame.timeLeft;
+      document.getElementById('core-score').textContent = gameState.coreGame.score;
+    }
+    
+    // ==================== ORB RHYTHM GAME ====================
+    const orbNames = ['🔴', '🔵', '🟢'];
+    const orbColors = ['#ef4444', '#3b82f6', '#22c55e'];
+    
+    function initOrbGame() {
+      gameState.orbGame = {
+        level: 1,
+        combo: 0,
+        power: 0,
+        pattern: [],
+        playerInput: [],
+        isShowingPattern: false,
+        isPlayerTurn: false
+      };
+      updateOrbUI();
+      document.getElementById('orb-status').textContent = 'กดปุ่ม "เริ่มเล่น" เพื่อดูลำดับลูกแก้ว';
+    }
+    
+    function startOrbRound() {
+      const level = gameState.orbGame.level;
+      const patternLength = 3 + level; // 4, 5, 6 orbs per level
+      
+      // Generate random pattern
+      gameState.orbGame.pattern = [];
+      for (let i = 0; i < patternLength; i++) {
+        gameState.orbGame.pattern.push(Math.floor(Math.random() * 3));
+      }
+      
+      gameState.orbGame.playerInput = [];
+      gameState.orbGame.isShowingPattern = true;
+      gameState.orbGame.isPlayerTurn = false;
+      
+      document.getElementById('orb-start-btn').disabled = true;
+      document.getElementById('orb-status').textContent = 'จดจำลำดับลูกแก้ว...';
+      
+      showOrbPattern();
+    }
+    
+    function showOrbPattern() {
+      const pattern = gameState.orbGame.pattern;
+      const displayEl = document.getElementById('orb-pattern-display');
+      let index = 0;
+      
+      displayEl.innerHTML = '<div class="text-amber-300 text-lg">จดจำลำดับนี้...</div>';
+      
+      const showNext = () => {
+        if (index < pattern.length) {
+          const orbIndex = pattern[index];
+          
+          // Highlight orb
+          const orbBtn = document.getElementById(`orb-${orbIndex + 1}`);
+          orbBtn.style.transform = 'scale(1.2)';
+          orbBtn.style.boxShadow = `0 0 30px ${orbColors[orbIndex]}`;
+          
+          // Update display
+          displayEl.innerHTML = `
+            <div class="text-2xl mb-1">${orbNames[orbIndex]}</div>
+            <div class="text-slate-400 text-sm">${index + 1} / ${pattern.length}</div>
+          `;
+          
+          setTimeout(() => {
+            orbBtn.style.transform = 'scale(1)';
+            orbBtn.style.boxShadow = '';
+            index++;
+            setTimeout(showNext, 300);
+          }, 500);
+        } else {
+          // Pattern shown, player's turn
+          gameState.orbGame.isShowingPattern = false;
+          gameState.orbGame.isPlayerTurn = true;
+          displayEl.innerHTML = '<div class="text-emerald-400">กดลูกแก้วตามลำดับ!</div>';
+          document.getElementById('orb-status').textContent = 'ถึงคราวของคุณ - กดลูกแก้วตามลำดับที่เห็น';
+        }
+      };
+      
+      setTimeout(showNext, 500);
+    }
+    
+    function hitOrb(orbIndex) {
+      if (!gameState.orbGame.isPlayerTurn) return;
+      
+      const orbBtn = document.getElementById(`orb-${orbIndex + 1}`);
+      
+      // Visual feedback
+      orbBtn.style.transform = 'scale(0.9)';
+      setTimeout(() => {
+        orbBtn.style.transform = 'scale(1)';
+      }, 100);
+      
+      gameState.orbGame.playerInput.push(orbIndex);
+      const inputIndex = gameState.orbGame.playerInput.length - 1;
+      const expected = gameState.orbGame.pattern[inputIndex];
+      
+      if (orbIndex === expected) {
+        // Correct!
+        gameState.orbGame.combo++;
+        gameState.orbGame.power = Math.min(100, gameState.orbGame.power + 10);
+        updateOrbUI();
+        
+        // Show progress
+        const displayEl = document.getElementById('orb-pattern-display');
+        displayEl.innerHTML = `
+          <div class="text-emerald-400 text-lg">✓ ถูกต้อง!</div>
+          <div class="text-slate-400 text-sm">${gameState.orbGame.playerInput.length} / ${gameState.orbGame.pattern.length}</div>
+        `;
+        
+        // Check if pattern complete
+        if (gameState.orbGame.playerInput.length === gameState.orbGame.pattern.length) {
+          gameState.orbGame.isPlayerTurn = false;
+          
+          if (gameState.orbGame.level >= 3) {
+            // Game complete!
+            gameState.items.head = true;
+            setTimeout(() => {
+              showItemObtained('🐉', 'หัวบั้งไฟวิญญาณ', () => showMenu());
+            }, 500);
+          } else {
+            // Next level
+            gameState.orbGame.level++;
+            setTimeout(() => {
+              document.getElementById('orb-start-btn').disabled = false;
+              document.getElementById('orb-status').textContent = 'ผ่านด่าน! กด "เริ่มเล่น" เพื่อไปด่านถัดไป';
+              updateOrbUI();
+            }, 500);
+          }
+        }
+      } else {
+        // Wrong!
+        gameState.orbGame.combo = 0;
+        gameState.orbGame.power = Math.max(0, gameState.orbGame.power - 20);
+        gameState.orbGame.isPlayerTurn = false;
+        updateOrbUI();
+        
+        const displayEl = document.getElementById('orb-pattern-display');
+        displayEl.innerHTML = `<div class="text-red-400 text-lg">✗ ผิด! ลองใหม่</div>`;
+        
+        setTimeout(() => {
+          document.getElementById('orb-start-btn').disabled = false;
+          document.getElementById('orb-status').textContent = 'กด "เริ่มเล่น" เพื่อลองใหม่';
+        }, 1000);
+      }
+    }
+    
+    function updateOrbUI() {
+      document.getElementById('orb-level').textContent = `${gameState.orbGame.level}/3`;
+      document.getElementById('orb-combo').textContent = gameState.orbGame.combo;
+      document.getElementById('orb-power').textContent = `${gameState.orbGame.power}%`;
+    }
+    
+    // ==================== CODE ENTRY ====================
+    function moveToNext(input, index) {
+      const inputs = document.querySelectorAll('.code-input');
+      if (input.value.length === 1 && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
+    }
+    
+    function submitCode() {
+      const inputs = document.querySelectorAll('.code-input');
+      const code = [...inputs].map(i => i.value).join('');
+      const messageEl = document.getElementById('code-message');
+      
+      if (code === SECRET_CODE) {
+        messageEl.innerHTML = '<span class="text-emerald-400">รหัสถูกต้อง! พญานาคจะปรากฏ...</span>';
+        setTimeout(() => {
+          showScreen('victory-screen');
+        }, 1500);
+      } else {
+        messageEl.innerHTML = '<span class="text-red-400">รหัสไม่ถูกต้อง ลองอีกครั้ง</span>';
+        inputs.forEach(i => i.value = '');
+        inputs[0].focus();
+      }
+    }
+    
+    // ==================== UTILITIES ====================
+    function clearTimers() {
+      if (gameState.coreGame.timer) {
+        clearInterval(gameState.coreGame.timer);
+        gameState.coreGame.timer = null;
+      }
+    }
+    
+    function showItemObtained(icon, name, callback) {
+      // Create overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-50';
+      overlay.innerHTML = `
+        <div class="text-center p-8 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-amber-500/30 shadow-2xl transform scale-0 transition-transform duration-500" id="item-modal">
+          <div class="text-6xl mb-4 glow-animation">${icon}</div>
+          <h3 class="title-font text-2xl font-bold text-amber-300 mb-2">ได้รับไอเทม!</h3>
+          <p class="text-amber-200/80 mb-6">${name}</p>
+          <button onclick="closeItemModal()" class="py-2 px-6 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl text-white font-bold">
+            รับไอเทม
+          </button>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      // Store callback
+      overlay.dataset.callback = callback ? 'true' : 'false';
+      window.itemCallback = callback;
+      
+      // Animate in
+      setTimeout(() => {
+        document.getElementById('item-modal').style.transform = 'scale(1)';
+      }, 100);
+    }
+    
+    function closeItemModal() {
+      const overlay = document.querySelector('.fixed.inset-0.bg-black\\/80');
+      if (overlay) {
+        overlay.remove();
+        if (window.itemCallback) {
+          window.itemCallback();
+          window.itemCallback = null;
+        }
+      }
+    }
+    
+    function resetGame() {
+      gameState.items = {
+        core: false,
+        gunpowder: false,
+        pattern: false,
+        head: false
+      };
+      showMenu();
+    }
+    
+    // Add shake animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Initialize
+    showMenu();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d33cc8ca1e87b5c',t:'MTc3MTk4NjgxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
